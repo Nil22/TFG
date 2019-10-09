@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Canvassing</title>
+	</head>
+	<style>
+	#ltpcanvas{
+		border: 5px solid black;
+		background-size: 100%;
+		position: center;
+		padding-top: 50px;
+	}
+	</style>
+	<body>
+		<canvas id='ltpcanvas' height = '350' width = '350'> </canvas>
+		<script>
+		window.onload = function(){
+			var ltpc = document.getElementById('ltpcanvas');
+			var context = ltpc.getContext('2d');
+			ltpc.addEventListener('mousedown', onDown, false);
+		}
+		function onDown(event){
+			cx = event.pageX;
+			cy = event.pageY;
+			alert("X,Y="+cx+','+cy)
+		}
+		</script>
+	</body>
+</html>

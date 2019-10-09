@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+<title>Pagina principal</title>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="css/styleindex.css"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+</head>
+
+<style type="">
+    #surt{
+        background-color: #df2b27;
+        color: #000050;
+    }
+</style>
+
+<body style="background-color: powderblue;">
+
+    <div class="wrapper">
+        <!-- Barra lateral  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Panell administració</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a id="dashboards">Dashboards</a>
+                </li>
+                <li>
+                    <a id="llistat">pàrquingDB</a>
+                </li>
+                <li>
+                    <a id="computacio">Computació</a>
+                </li>
+                <li>
+                    <a id="testbed">Testbed</a>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a id="vistaadmin" class="download">GENERAL</a>
+                </li>
+                <li>
+                    <a id="surt" class="download">SURT DEL PANELL</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+        	{{{ body }}}
+
+        </div>
+    </div>
+
+    <!-- Links navegacio -->
+    <script type="text/javascript">
+        var ip = location.hostname;
+        var port = location.port;
+        document.getElementById('dashboards').href = 'http://'+ip+':'+port.toString()+'/dashboards';
+        document.getElementById('llistat').href = 'http://'+ip+':'+port.toString()+'/llista_vehicles';
+        document.getElementById('computacio').href = 'http://'+ip+':'+port.toString()+'/computacio';
+        document.getElementById('testbed').href = 'http://'+ip+':'+port.toString()+'/testbed';
+        document.getElementById('vistaadmin').href = 'http://'+ip+':'+port.toString()+'/admin';
+        document.getElementById('surt').href = 'http://'+ip+':'+port.toString();
+    </script>
+
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- Boto per amagar barra lateral -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+
+</body>
+</html>

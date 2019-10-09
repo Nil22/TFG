@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+
+<!-- HEAD -->
+
+<head>
+
+<meta charset="UTF-8">
+<!-- <meta http-equiv="refresh" content="1" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/styleindex.css">
+<!-- Load an icon library -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+
+<style type="text/css">
+  canvas {
+      padding: 0;
+      margin: auto;
+      display: block;
+      position: absolute;
+      top: 90px;
+      bottom: 0;
+      left: 240px;
+      right: 0;
+  }
+
+  #titol{
+    font-size: 30px;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle;
+    position: absolute;
+    left: 30%;
+    bottom: 15%;
+  }
+
+</style>
+
+<script>
+
+var ip = location.hostname;
+
+setInterval("draw();", 1000);
+
+window.onload = function(){
+  var c = document.getElementById('canvas');
+  c.addEventListener('mousedown', onDown, false);
+  var ctx = c.getContext('2d');
+  ctx.strokeStyle='black';
+  ctx.lineWidth=4;
+}
+
+function onDown(event){
+  var rect = document.getElementById("canvas").getBoundingClientRect();
+  axios.get('http://'+ip+':8000/get_vehicles_testbed').then(response => {
+    let humy = response.data
+    console.log(humy[0])
+    cx = event.clientX - rect.left;
+    cy = event.clientY - rect.top;
+    /*if(cx <= 200 && cy <=300){
+      $('#modalBody').text('');
+      $('#modalBody').text('HOLA1');
+      $('#exampleModalLabel').text('Plaça 1');
+      $('#myModal').modal('show');
+    }
+    if(cx <= 400 && cx > 200 && cy <=300){
+      $('#modalBody').text('');
+      $('#modalBody').text('HOLA2');
+      $('#exampleModalLabel').text('Plaça 2');
+      $('#myModal').modal('show');
+    }
+    if(cx <= 600 && cx > 400 && cy <=300){
+      $('#modalBody').text('');
+      $('#modalBody').text('HOLA3');
+      $('#exampleModalLabel').text('Plaça 3');
+      $('#myModal').modal('show');
+    } */
+    if(cx <= 800 && cx > 600 && cy <=300){
+      $('#modalBody').text('');
+      reso='Matrícula : '+humy[0]['matricula']+'<br>IP : 10.0.2.16'+'<br>Nom : Adri/ilyas '+'<br>Data entrada : '+humy[0]['data_entrada'];
+      $('#modalBody').append(reso);
+      $('#exampleModalLabel').text('Plaça 4');
+      $('#myModal').modal('show');
+    }
+    /*let humy = response.data
+    // Plaça 1
+    var output1 = "Plaça: " + humy["id"] + " --- Reservada: " + humy['ocupada1'] + " --- IP vehicle: " + humy['ip_vehicle1'] +
+    " --- Data d'entrada: " + humy['data_entrada1']
+    $("#myModal1 .modal-body").html(output1);
+
+
+    // Plaça 2
+    var output2 = "Plaça: " + humy["A2"] + " --- Reservada: " + humy['ocupada2'] + " --- IP vehicle: " + humy['ip_vehicle2'] +
+    " --- Data d'entrada: " + humy['data_entrada2']
+    $("#myModal1 .modal-body").html(output2);
+
+    // Plaça 3
+    var output3 = "Plaça: " + humy["A3"] + " --- Reservada: " + humy['ocupada3'] + " --- IP vehicle: " + humy['ip_vehicle2'] +
+    " --- Data d'entrada: " + humy['data_entrada3']
+    $("#myModal1 .modal-body").html(output3); */
+
+
+
+  }).catch(e => {
+    console.log("Hi ha hagut un error",e)
+  })
+
+}
+
+var ip = location.hostname;
+
+
+function draw(){
+  c = document.getElementById("canvas");
+  ctx = c.getContext("2d");
+
+  axios.get('http://'+ip+':8000/get_places_testbed').then(response => {
+    let humy = response.data
+    console.log(humy[0])
+    c.addEventListener('mousedown', onDown, false);
+    var total_places = 3;
+    var ocupacio = 0;
+
+    ctx.fillStyle = "green";
+
+    ctx.fillRect(0, 0, 200, 300);
+
+    ctx.fillRect(200, 0, 200, 300);
+
+    ctx.fillRect(400, 0, 200, 300);
+
+    ctx.fillRect(600, 0, 200, 300);
+
+    ocupada = humy[0]['status']
+    if(ocupada == 1){
+      console.log('plasa 1 ocupada')
+      ctx.fillStyle = "#ed110e";
+      ctx.fillRect(0, 0, 200, 300);
+    }
+    else {
+      console.log('plasa 1 no ocupada')
+      ctx.fillStyle = "green";
+      ctx.fillRect(0, 0, 200, 300);
+    }
+
+    ocupada = humy[1]['status']
+    if(ocupada == 1){
+      console.log('plasa 2 ocupada')
+      ctx.fillStyle = "#ed110e";
+      ctx.fillRect(200, 0, 200, 300);
+    }
+    else {
+      console.log('plasa 2 no ocupada')
+      ctx.fillStyle = "green";
+      ctx.fillRect(200, 0, 200, 300);
+    }
+
+    ocupada = humy[2]['status']
+    if(ocupada == 1){
+      console.log('plasa 3 ocupada')
+      ctx.fillStyle = "#ed110e";
+      ctx.fillRect(400, 0, 200, 300);
+    }
+    else {
+      console.log('plasa 3 no ocupada')
+      ctx.fillStyle = "green";
+      ctx.fillRect(400, 0, 200, 300);
+    }
+
+    ocupada = humy[3]['status']
+    if(ocupada == 1){
+      console.log('plasa 4 ocupada')
+      ctx.fillStyle = "#ed110e";
+      ctx.fillRect(600, 0, 200, 300);
+    }
+    else {
+      console.log('plasa 4 no ocupada')
+      ctx.fillStyle = "green";
+      ctx.fillRect(600, 0, 200, 300);
+    }
+
+
+    ctx.strokeStyle='solid black';
+    ctx.lineWidth=4;
+
+    // pintem les linies verticals
+    for(i = 0; i <= 800; i = i + 200){
+      ctx.moveTo(i,0);
+      ctx.lineTo(i,300);
+      ctx.stroke();
+    }
+    // pintem les linies horitzontals
+    for(j = 0; j <= 800; j = j + 300){
+      ctx.moveTo(0,j);
+      ctx.lineTo(800,j);
+      ctx.stroke();
+    }
+
+    // part abaix blanca
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 300, 800, 500);
+
+    // text de cada plasa
+    ctx.font = "40px verdana, sans-serif";
+    ctx.fillStyle = "black";
+    ctx.fillText('A1', 75, 150);
+    ctx.fillText('A2', 275, 150);
+    ctx.fillText('A3', 475, 150);
+    ctx.fillText('A4', 675, 150);
+
+    ctx.fillStyle = 'gray'
+    ctx.fillRect(0, 300, 800, 300)
+
+
+    //var img = document.getElementById("toll");
+    //ctx.drawImage(img, 650, 350);
+
+    }).catch(e => {
+      console.log("Hi ha hagut un error",e)
+    })
+
+}
+
+</script>
+
+
+<!-- BODY -->
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span>≡</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <label id="titol">PÀRQUING TESTBED</label>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Tanca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<body onload="draw()">
+  <!-- Canvas -->
+<div id=wrapper>
+  <canvas id="canvas" width=800 height=500 style="border:4px solid black;"></canvas>
+</div>
+
+</body>
+
+<img id="toll" width="32" height="32" src="toll.png" style="display:none;" alt="The toll">
+
+</body>
+
+</html>

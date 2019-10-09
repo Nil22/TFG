@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- HEAD -->
+
+<head>
+  <title>Inici</title>
+  <meta charset="UTF-8">
+  <!-- <meta http-equiv="refresh" content="1" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="canvas1.js"></script>
+  <script src="canvas2.js"></script>
+  <script src="canvas3.js"></script>
+  <script src="ondown1.js"></script>
+  <script src="ondown2.js"></script>
+  <script src="ondown3.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+
+
+<style type="text/css">
+  canvas {
+      padding: 0;
+      margin: auto;
+      display: block;
+      position: absolute;
+      top: 90px;
+      bottom: 0;
+      left: 250px;
+      right: 0;
+  }
+</style>
+
+
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+
+#dropdownMenuButton {
+  background-color: blue;
+  margin-right: 80px;
+  cursor: pointer;
+}
+#ocu {
+  cursor: pointer;
+}
+#compu {
+  cursor: pointer;
+}
+
+#btnid0{
+  margin-right: 20px;
+}
+
+#btnid1{
+  margin-right: 20px;
+}
+
+#btnid2{
+  margin-right: 20px;
+}
+
+#btnid3{
+  margin-right: 20px;
+}
+
+#btnid4{
+  margin-right: 20px;
+}
+
+#labelPlanta{
+  margin-right: 200px;
+  font-size: 25px;
+}
+
+</style>
+
+
+<script>
+
+   window.onload = function(){
+    add()
+    draw1()
+    document.getElementById("btnid0").onclick = function() {posa1()};
+    document.getElementById("btnid1").onclick = function() {posa2()};
+    document.getElementById("btnid2").onclick = function() {posa3()};
+   }
+
+  var ip = location.hostname;
+
+
+// hide the menu when an exmple is clicked
+$(".dropdown").on("click", function(){
+    $(".dropdown-content").hide(); 
+});
+
+
+function change(){
+  var canvas1 = document.getElementById('canvas1');
+  ctx = c.getContext("2d");
+  value = document.getElementById('myInput').value;
+  ctx.canvas.width = value;
+  draw1();
+  document.getElementById('myInput').style.display = "none";
+  document.getElementById('nplantes').style.display = "none";
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", 'http://'+ip+':8000/placesfront', true);
+  xhttp.setRequestHeader("Content-type", "text/plain");
+  data = '{ "numPlaces" : "numPlaces", "placesXplanta" : ' + value + ' }'
+  xhttp.send(data);
+}
+
+function httpGet(theUrl, data)
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", theUrl, true);
+    xhttp.setRequestHeader("Content-type", "text/plain");
+    xhttp.send(data);
+}
+
+axios.get('http://'+ip+':8000/placesfront')
+  .then(function (response) {
+    humy = response.data
+    console.log(humy)
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .finally(function () {
+    // always executed
+  });
+
+
+</script>
+
+
+
+</head>
+
+<!-- BODY -->
+
+<body>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Tanca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NavBar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span>≡</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <label id="labelPlanta">Planta 0</label>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aplica un filtre</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" id="ocu" onclick="ocupades();">Ocupació</a>
+                    <a class="dropdown-item" id="compu" onclick="computades();">Computació</a>
+                  </div>
+                </div>
+                <div id="myBtnContainer">
+                  {{!-- <button class="btn" onclick="window.location.reload()"> Planta 1</button>
+                  <button class="btn" onclick="draw2()"> Planta 2</button>
+                  <button class="btn" onclick="draw3()"> Planta 3</button> --}}
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Canvas -->
+<div id=wrapper>
+  <canvas id="canvas1" width=1000 height=500 style="border:4px solid black;"></canvas>
+</div>
+
+<div id=wrapper2>
+  <canvas id="canvas2" width=1000 height=500 style="border:4px solid black;"></canvas>
+</div>
+
+<div id=wrapper3>
+  <canvas id="canvas3" width=1000 height=500 style="border:4px solid black;"></canvas>
+</div>
+
+<script>
+
+  draw1()
+  draw2()
+  draw3()
+
+  //swapCanvases();
+
+  function swapCanvases(){
+    c1 = true
+    c2 = false
+    c3 = false
+    console.log('CANVAS1', canvas1.style.visibility)
+    console.log('CANVAS2', canvas2.style.visibility)
+    console.log('CANVAS3', canvas3.style.visibility)
+    if(canvas1.style.visibility=='visible' && c2 == false){
+      canvas1.style.visibility='hidden';
+      canvas2.style.visibility='visible';
+      canvas3.style.visibility='hidden';
+    }
+    else if(canvas2.style.visibility=='visible'){
+      canvas2.style.visibility='hidden';
+      canvas3.style.visibility='visible';
+      canvas1.style.visibility='hidden';
+    }
+    else{
+      canvas1.style.visibility='visible';
+      canvas2.style.visibility='hidden';
+      canvas3.style.visibility='hidden';
+    }
+  }
+
+  function swapCanvases2(){
+    if(canvas1.style.visibility=='visible'){
+      canvas1.style.visibility='hidden';
+      canvas2.style.visibility='visible';
+      canvas3.style.visibility='hidden';
+    }
+    else if(canvas2.style.visibility=='visible'){
+      canvas2.style.visibility='hidden';
+      canvas3.style.visibility='visible';
+      canvas1.style.visibility='hidden';
+    }
+    else{
+      canvas1.style.visibility='visible';
+      canvas2.style.visibility='hidden';
+      canvas3.style.visibility='hidden';
+    }
+  }
+
+  console.log('CANVAS1', canvas1.style.visibility)
+  console.log('CANVAS2', canvas2.style.visibility)
+  console.log('CANVAS3', canvas3.style.visibility)
+
+  document.getElementById("wrapper2").style.visibility = "hidden";
+
+  document.getElementById("wrapper3").style.visibility = "hidden";
+
+  document.getElementById("wrapper").style.visibility = "visible";
+
+  function posa3(){
+    document.getElementById("wrapper").style.visibility = "hidden";
+
+    document.getElementById("wrapper2").style.visibility = "hidden";
+
+    document.getElementById("wrapper3").style.visibility = "visible";
+    $('#labelPlanta').text("Planta 2");
+  }
+
+  function posa2(){
+    document.getElementById("wrapper").style.visibility = "hidden";
+
+    document.getElementById("wrapper3").style.visibility = "hidden";
+
+    document.getElementById("wrapper2").style.visibility = "visible";
+    $('#labelPlanta').text("Planta 1");  
+  }
+
+  function posa1(){
+    document.getElementById("wrapper2").style.visibility = "hidden";
+
+    document.getElementById("wrapper3").style.visibility = "hidden";
+
+    document.getElementById("wrapper").style.visibility = "visible";
+    $('#labelPlanta').text("Planta 0");
+  }
+
+  console.log('PERRO1', document.getElementById("wrapper").style.visibility)
+  console.log('PERRO2', document.getElementById("wrapper2").style.visibility)
+  console.log('PERRO3', document.getElementById("wrapper3").style.visibility)
+
+  function ocupades(){
+    if(document.getElementById("wrapper").style.visibility == "visible"){
+      pintaocupades();
+    }
+    if(document.getElementById("wrapper2").style.visibility == "visible"){
+      pintaocupades2();
+    }
+    if(document.getElementById("wrapper3").style.visibility == "visible"){
+      pintaocupades3();
+    }
+  }
+
+  function computades(){
+    if(document.getElementById("wrapper").style.visibility == "visible"){
+      pintaplasa();
+    }
+    if(document.getElementById("wrapper2").style.visibility == "visible"){
+      computacio2();
+    }
+    if(document.getElementById("wrapper3").style.visibility == "visible"){
+      computacio3();
+    }
+  }
+
+
+</script>
+
+</body>
+
+</html>

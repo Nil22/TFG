@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- HEAD -->
+
+<head>
+<title>Inici</title>
+<meta charset="UTF-8">
+<!-- <meta http-equiv="refresh" content="1" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/styleindex.css" />">
+<!-- Load an icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.js'></script>
+
+<link href='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.css' rel='stylesheet' />
+
+
+
+<script>
+
+
+window.onload = function(){
+  c = document.getElementById("canvas");
+  ctx = c.getContext("2d");
+  ctx.textAlign = "center";
+}
+
+function onDown(event){
+  cx = event.pageX;
+  cy = event.pageY;
+  alert("X,Y="+cx+','+cy)
+}
+
+
+function draw(){
+  c = document.getElementById("canvas");
+  ctx = c.getContext("2d");
+  c.addEventListener('mousedown', onDown, false);
+  var total_places = 9;
+  var ocupacio = 0;
+  var img = document.getElementById("caricon");
+  for(var x = 0; x < 3; x++){
+    for(var y = 0; y < 3; y++){
+      var num = Math.floor(Math.random() * 2); 
+      if(num == 0){
+        ctx.fillStyle = "green";
+        ctx.fillRect(100*x, 100*y, 100, 100);
+        ocupacio = ocupacio + 1;
+      }
+      else{
+        ctx.font = "22px verdana, sans-serif";
+        ctx.fillStyle = "red";
+        ctx.fillRect(100*x, 100*y, 100, 100);
+        ctx.fillStyle = "black";
+        //ctx.fillText("A2", 10, 10);
+        ctx.drawImage(img, 0, 10);
+        ctx.drawImage(img, 0, 110);
+        ctx.drawImage(img, 0, 210);      
+      }
+    }
+  }
+  ctx.fillStyle = "black";
+  ctx.fillText(ocupacio/total_places, 150, 300);
+  return total_places-ocupacio;
+}
+
+</script>
+
+</head>
+
+<!-- BODY -->
+
+
+
+<body>
+
+
+<header>
+  <h1> PANELL ADMIN </h1>
+</header>
+
+<ul>
+  <li><a class="active" href="/home/aerie/Documents/nsp/pages/index.html">Home</a></li>
+  <li><a href="/home/aerie/Documents/nsp/pages/canvasclick.html">Reserves</a></li>
+  <li><a href="/home/aerie/Documents/nsp/pages/dashboards.html">Dashboards</a></li>
+  <li><a href="/home/aerie/Documents/nsp/pages/simple.html">pàrquingDB</a></li>
+</ul>
+
+
+
+
+<body onload="draw()" bgcolor="white">
+  <center>
+    <canvas id="canvas" witdh="300" height="300">
+    </canvas>
+  </center>
+</body>
+
+
+<button class="open-button">Open Form</button>
+
+
+
+
+</body>
+
+</html>

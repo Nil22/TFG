@@ -1,0 +1,154 @@
+</!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+  <script src="grafs.js"></script>
+</head>
+
+
+<script>
+
+//setInterval("display_cpu();", 2000);
+setInterval("display2();", 2000);
+setInterval("display3();", 2000);
+setInterval("display4();", 1000);
+setInterval("display5();", 2000);
+setInterval("display6();", 2000);
+//window.onload = display_cpu()
+window.onload = display2()
+window.onload = display3()
+window.onload = display4()
+window.onload = display5()
+window.onload = display6()
+</script>
+
+
+
+
+<style>
+
+#myChart2{
+  margin-left: 20%;
+}
+
+#myChart3{
+  margin-top: 8%;
+  margin-left: 60%;
+}
+
+#myChart4{
+  margin-left: 60%;
+}
+
+#myChart5{
+  margin-top: 8%;
+  margin-left: 100%;
+}
+
+#myChart6{
+  margin-left: 100%;
+}
+
+
+#label2{
+  display: block; 
+  width: 200px;
+  margin-left: 40%;
+}
+
+#label3{
+  display: block; 
+  width: 200px;
+  margin-left: 80%;
+}
+
+#label4{
+  display: block; 
+  width: 200px;
+  margin-top: 10%;
+  margin-left: 100%;
+}
+
+#label5{
+  display: block; 
+  width: 200px;
+  margin-left: 130%;
+}
+
+#label6{
+  display: block; 
+  width: 200px;
+  margin-left: 130%;
+}
+
+#titlelabel {
+  font-size: 30px;
+  text-align: center;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  left: 45%;
+  bottom: 20%;
+}
+
+</style>
+
+
+
+
+
+
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span>≡</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <label id="titlelabel">Dashboards</label>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="column">
+      {{!-- <label id="label1" for="myChart1"><b>TOP</b></label>
+      <canvas id="myChart1" width="250" height="250"></canvas> --}}
+
+      <label id="label2" for="myChart2"><b>Fitxers computats en els últims 7 dies</b></label>
+      <canvas id="myChart2" width="250" height="250"></canvas>
+
+      <label id="label4" for="myChart4"><b>Estadístiques</b></label>
+      <canvas id="myChart4" width="250" height="250"></canvas>
+    </div>
+
+    <div class="column">
+      <label id="label3" for="myChart3"><b>Serveis en execució</b></label>
+      <canvas id="myChart3" width="250" height="250"></canvas>
+      <label id="label6" for="myChart2"><b>Reserves per avui</b></label>
+      <canvas id="myChart6" width="250" height="250"></canvas>
+    </div>
+
+    <div class="column">
+      <label id="label5" for="myChart2"><b>Recursos totals</b></label>
+      <canvas id="myChart5" width="250" height="250"></canvas>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

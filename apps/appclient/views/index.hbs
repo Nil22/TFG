@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style type="text/css">
+	#input1{
+		background-color: white;
+	}
+	#submitt{
+		margin-left: 40%;
+		height: 50px;
+		width: 200px;
+	}
+	#div1{
+		display: flex;
+		flex-direction: column;
+	  	justify-content: center;
+	  	text-align: center;
+	}
+	.btn-group button {
+	  padding: 10px 24px; /* Some padding */
+	  cursor: pointer; /* Pointer/hand icon */
+	  float: left; /* Float the buttons side by side */
+	}
+</style>
+
+<script>
+
+	var ip = location.hostname;
+
+	function change(){
+	  value = document.getElementById('input1').value;
+	  valueint = parseInt(value)
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.open("POST", 'http://'+ip+':8000/placesfront', true);
+	  xhttp.setRequestHeader("Content-type", "text/plain");
+	  data = '{ "numPlaces" : "numPlaces", "placesXplanta" : ' + valueint + ' }'
+	  xhttp.send(data);
+
+	  value2 = document.getElementById('input2').value;
+	  value2int = parseInt(value2)
+	  var xhttp2 = new XMLHttpRequest();
+	  xhttp.open("POST", 'http://'+ip+':8000/plantesfront', true);
+	  xhttp.setRequestHeader("Content-type", "text/plain");
+	  data2 = '{ "numPlantes" : "numPlantes", "placesXplanta" : ' + value2int + ' }'
+	  xhttp.send(data2);
+	  alert('Pàrquing canviat a ' + valueint + ' places i ' + value2int + ' plantes')
+	}
+
+	function demanaservei(){
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", 'http://'+ip+':8000/request_service', true);
+		//var request = { 'service_id' : 'PARKING'};
+		//request['service_id'] = 'PARKING';
+        //request['params'] = {};
+
+        var obj = '{ "service_id":"PARKING", "params":{}, "agent_ip":"10.0.6.50"}';
+        console.log(typeof(obj))
+		xhttp.send(obj);
+	}
+
+</script>
+
+<body>
+
+	<div id="div1" class="jumbotron-mt-4">
+		<h1 class="display-4"> Benvingut a l'aplicació </h1>
+		<h3 class="display-4"> Quin servei vols ? </h3>
+	</div>
+
+	<div id="div2" class="btn-group">
+		<button style="margin-left: 300px; margin-top: 50px; height:200px; width:200px;" onclick="servei_aparcament();" type="button" class="btn btn-outline-primary">Aparcament</button>
+		<button style="margin-left: 100px; margin-top: 50px; height:200px; width:400px;" onclick="servei_computacio();" type="button" class="btn btn-outline-dark">Supercomputació o computació</button>
+	</div>
+
+
+    <!-- Links navegacio -->
+    <script type="text/javascript">
+        function servei_computacio(){
+        	var ip = location.hostname;
+        	var port = location.port;
+        	window.location = 'http://'+ip+':'+port.toString()+'/computacio';
+        }
+        function servei_aparcament(){
+        	demanaservei()
+        	alert('Servei demanat correctament')
+        	window.location.reload()
+        }
+        
+    </script>
+
+
+</body>
+</html>

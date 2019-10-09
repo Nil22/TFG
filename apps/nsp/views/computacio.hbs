@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+<style>
+
+th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+h1 {
+  margin-left: 20%;
+}
+
+
+form{
+  padding-left: 5%;
+  color: black;
+  font-size: 25px;
+}
+
+input[type=submit] {
+  color: gray;
+}
+
+.table {
+  background-color: #6cc86c;
+  margin-left: 5%;
+  margin-top: 5%;
+  width: 90%;
+}
+
+#titlelabel {
+  font-size: 30px;
+  text-align: center;
+  margin: auto;
+  vertical-align: middle;
+  position: absolute;
+  left: 18%;
+  bottom: 15%;
+}
+
+
+tr:hover { 
+   background: #007575;
+}
+
+#boto{
+  margin-left: 200px;
+}
+
+#inputVersio{
+  margin-top: 20px;
+}
+
+#inputPP{
+  margin-top: 20px;
+}
+
+</style>
+
+
+
+<script>
+
+var ip = location.hostname;
+
+/*
+$(document).ready(function(){
+    $("#MyTable td").click(function() {     
+ 
+        //var column_num = parseInt( $(this).index() ) + 1;
+        //var row_num = parseInt( $(this).parent().index() )+1;    
+        //alert('Clicked ' + row_num)
+
+        var currentRow=$(this).closest("tr"); 
+   
+        var estat=currentRow.find("td:eq(4)").text(); 
+
+        if(estat == 'Finalitzat'){
+          var nom_fitxer=currentRow.find("td:eq(7)").text();
+          //alert(nom_fitxer)
+          //baixa_fitxer()
+        }
+    });
+}); */
+
+function baixa_fitxer() {
+  axios.get('http://'+ip+':8080/download_file').then(response => {
+    let humy = response.data
+    console.log(humy)
+  }).catch(e => {
+    console.log("Error",e)
+  })
+}
+
+
+function change(filename, version, pp){
+  var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", 'http://'+ip+':8000/gestio_computacio', true);
+  xhttp.setRequestHeader("Content-type", "text/plain");
+  var text = "\""+ filename+  "\"";
+  var versionn = "\""+ version+  "\""; 
+  var ppp = "\""+ pp+  "\""; 
+  data = '{ "paralel" : ' + ppp + ', "version" : ' + versionn + ', "estat" : "Pendent", "nom_fitxer" : ' + text + ' }'
+  console.log(data)
+  xhttp.send(data);
+}
+
+</script>
+
+<script type="text/javascript">
+
+  function httpPost(theUrl, data)
+  {
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", theUrl, true);
+      xhttp.setRequestHeader("Content-type", "text/plain");
+      xhttp.send(data);
+  }
+  // esborra el fitxer seleccionat a la taula
+  function esborra_fitxer() {
+    $('#MyTable').find('tr').click( function(){
+      var row = $(this).find('td:first').text();
+      var table = document.getElementById('MyTable');
+      var nom = "\""+ table.rows[row].cells[1].innerHTML+  "\""; 
+      data = '{ "nom" : ' + nom + ' }'
+      httpPost('http://'+ip+':8000/esborraFitxer', data)
+      window.location.reload()
+    });
+  }
+
+</script>
+
+
+<body>
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span>≡</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <label id="titlelabel">Envia un fitxer a computar / estat dels fitxers </label>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="form-wrapper">
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      Selecciona un fitxer Python per enviar-lo a computar:
+      <input type="file" name="image">
+    </div>
+
+    <div class="form-group">
+      <label for="inputVersio">Selecciona la versió de Python:</label>
+
+      <input type="text" id="inputVersio" name="txtVersion" list="browsersPython">
+      <datalist id="browsersPython">
+        <option value="Python2">
+        <option value="Python3">
+      </datalist>
+    </div>
+
+    <label for="inputPP">Utilitza ParalelPython?</label>
+
+    <input type="text" id="inputPP" name="txtPP" list="browsersPP">
+    <datalist id="browsersPP">
+      <option value="SÍ">
+      <option value="NO">
+    </datalist>
+    <button id="btnsubmit" type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+</div>
+
+  <table align="center" id="MyTable" class="table">
+    <thead>
+      <tr>
+        <th style="width: 2%">#</th>
+        <th style="width: 5%">Nom del fitxer</th>
+        <th style="width: 5%">Versió</th>
+        <th style="width: 5%">Paral·lel</th>
+        <th style="width: 5%">Estat</th>
+        <th style="width: 5%">Data d'enviament</th>
+        <th style="width: 5%">Data finalització</th>
+        <th style="width: 5%">Clica sobre el nom per descarregar fitxer d'ouput</th>
+        <th style="width: 2%">Esborra</th>
+      </tr>
+    </thead>
+
+    <tbody>
+     {{#each listfitxers}}
+        <tr>
+          <td>{{@index}}</td>
+          <td>{{nom_fitxer}}</td>
+          <td>{{version}}</td>
+          <td>{{paralel}}</td>
+          <td>{{estat}}</td>
+          <td>{{data_entrada}}</td>
+          <td>{{data_finalitzacio}}</td>
+          <td style="cursor: pointer;">{{output}}</td>
+          <td onclick="esborra_fitxer()" style="cursor: pointer; color: red; font-size: 30px;"><i class="fa fa-close"></i></td>
+        </tr>
+     {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script language="javascript">
+    var ip = location.hostname;
+    var tbl = document.getElementById("MyTable");
+    if (tbl != null) {
+        for (var i = 0; i < tbl.rows.length; i++) {
+            for (var j = 7; j < tbl.rows[i].cells.length-1; j++)
+                tbl.rows[i].cells[j].onclick = function () { getval(this); };
+        }
+    }
+    function getval(cel) {
+      cellValue = cel.innerHTML;
+      console.log(cel.innerHTML);
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("GET", 'http://'+ip+':8080/download_file/'+cellValue, true);
+      window.open('http://'+ip+':8080/download_file/'+cellValue)
+      xhttp.send( null );
+      window.location.reload()
+    }
+</script>
+
+
+<script>
+  document.getElementById("MyTable").deleteRow(1);
+  $.get('http://'+ip+':8000/errorExecution', function(responseText) {
+    var rows = document.getElementById("MyTable").getElementsByTagName("tr");
+    //alert(responseText.length);
+    for(var i = 0; i < responseText.length; i++){
+      if(responseText[i] == '0'){
+        rows[i+1].style.backgroundColor = "lightgreen";
+      }
+      else{
+        rows[i+1].style.backgroundColor = "tomato";
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
