@@ -236,31 +236,24 @@ class API:
 	@cherrypy.expose
 	@cherrypy.tools.json_in()
 	@cherrypy.tools.json_out()
-	# Agent will make a POST to .../execute_service/aparcar
-	def execute_service(self, serviceID=None):
+	def execute_service(self):
 		if cherrypy.request.method == "POST":
 			body = cherrypy.request.json
-			print('COS EXECUTE', body)
-			if(body['service_id'] == 'APARCAR'):
-				agentID = body['agent_ip'] # agentID = ID agent que solicita
-			else:
-				agentID = body['params']['agent_id']
-			# la de abaix funciona amb el meu, adalt adri
-			#agentID = body['params']['agent_id'] # agentID = ID agent que solicita
-			serviceID = body['service_id'] # serviceID = id del servei
+			agentID = body['agent_ip'] # agentID = ID agent que solicita
+			serviceID = body['service_id'] # serviceID = identificador del servei a la BD
 			# El agent que demana el servei es troba registrat a la topoDB
-			if(self.agent_collection.find({'nodeID': agentID}).count() >= 0):
+			if(self.agent_collection.find({'myIP': agentID}).count() > 0):
 				# Cridem al SEX per que obtingui la informacio del servei
 				info_servei = {}
 				info_servei = self.agent._SEX.get_service_request(serviceID, agentID)
 				extraParams = {}
+				# Paràmetres necessaris pel servei de computació
 				if(serviceID == 'computar'):
 					extraParams['version'] = body['version']
 					extraParams['paralel'] = body['paralel']
 					extraParams['nom_fitxer'] = body['nom_fitxer']
 					extraParams['ipAgent'] = body['ipAgent']
 					extraParams['quiExecuta'] = body['quiExecuta']
-					#print('info_servei', info_servei)
 				# Cridem al RT amb la informacio del servei obtinguda
 				return self.agent._RT.executa_servei(agentID, info_servei, extraParams)
 			else:
